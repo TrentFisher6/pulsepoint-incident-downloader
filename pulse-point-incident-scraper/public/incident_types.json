@@ -1,0 +1,8 @@
+{
+  "FIRE": "Fire",
+  "MEDICAL": "Medical Emergency",
+  "TRAFFIC": "Traffic Collision",
+  "HAZMAT": "Hazardous Materials",
+  "RESCUE": "Rescue Operation",
+  "OTHER": "Other Emergency"
+} 
