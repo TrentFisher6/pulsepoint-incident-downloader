@@ -108,7 +108,9 @@ export default function Home() {
         'HMR': 'Hazmat Response',
         'GAS': 'Gas Leak',
         'LO': 'Lockout',
-        'TCE': 'Traffic Collision'
+        'TCE': 'Traffic Collision',
+        'ELR': 'Elevator Rescue',
+        'RF': 'Residential Fire'
       };
       return typeMap[type] || type;
     };

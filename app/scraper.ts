@@ -57,8 +57,11 @@ export class Scraper {
         }
       });
 
-      if ('Unit' in x) {
-        this.convertIncidents(x.Unit as Incident[]);
+      if ('Unit' in x && Array.isArray(x.Unit)) {
+        // Process units if needed, but don't try to convert them as incidents
+        x.Unit.forEach(unit => {
+          // Add any unit-specific date conversions here if needed
+        });
       }
 
       if ('PulsePointIncidentCallType' in x) {
