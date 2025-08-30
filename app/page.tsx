@@ -9,6 +9,7 @@ export default function Home() {
   const [incidents, setIncidents] = useState<Incidents | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'summary' | 'json'>('summary');
 
   const handleFetch = async () => {
     setLoading(true);
@@ -203,6 +204,28 @@ export default function Home() {
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Results</h2>
               <div className="flex gap-2">
+                <div className="flex bg-gray-100 rounded-md p-1">
+                  <button
+                    onClick={() => setViewMode('summary')}
+                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                      viewMode === 'summary'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Summary
+                  </button>
+                  <button
+                    onClick={() => setViewMode('json')}
+                    className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+                      viewMode === 'json'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Raw JSON
+                  </button>
+                </div>
                 <button
                   onClick={handleDownloadCSV}
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -218,17 +241,41 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Active Incidents</h3>
-                <p className="text-gray-600">{incidents.active.length} active incidents</p>
+            {viewMode === 'summary' ? (
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Active Incidents</h3>
+                  <p className="text-gray-600">{incidents.active.length} active incidents</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Recent Incidents</h3>
+                  <p className="text-gray-600">{incidents.recent.length} recent incidents</p>
+                </div>
               </div>
-              
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Recent Incidents</h3>
-                <p className="text-gray-600">{incidents.recent.length} recent incidents</p>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-lg font-medium text-gray-900">Raw Response Data</h3>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(JSON.stringify(incidents, null, 2))}
+                      className="inline-flex items-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      Copy JSON
+                    </button>
+                  </div>
+                  <div className="bg-gray-900 rounded-md p-4 max-h-96 overflow-auto border">
+                    <pre className="text-sm text-green-400 whitespace-pre-wrap font-mono">
+                      {JSON.stringify(incidents, null, 2)}
+                    </pre>
+                  </div>
+                  <div className="mt-2 text-sm text-gray-500">
+                    Total active incidents: {incidents.active.length} | Total recent incidents: {incidents.recent.length}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
