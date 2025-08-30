@@ -11,7 +11,7 @@ export async function GET(request: Request) {
 
   try {
     // Fetch the encrypted data from PulsePoint
-    const response = await fetch(`https://web.pulsepoint.org/DB/giba.php?agency_id=${agencyId}`);
+    const response = await fetch(`https://api.pulsepoint.org/v1/webapp?resource=incidents&agencyid=${agencyId}`);
     const data = await response.json();
     
     const ct = Buffer.from(data.ct, 'base64');
